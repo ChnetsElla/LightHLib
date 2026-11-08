@@ -1,0 +1,19 @@
+{
+	"required": true,
+	"package": "com.lighthlib.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"BlockMixin",
+		"BlockBehaviourPropertiesMixin",
+		"LevelChunkMixin",
+		"LevelLightEngineListenerMixin",
+		"LevelLightEngineMixin",
+		"LightCoordsUtilMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
