@@ -1,0 +1,20 @@
+Copyright (c) 2026 Chnets Ella. All Rights Reserved.
+
+This project (LightHLib) uses a dual-licensing model: an open public API and a closed-source core engine.
+
+The public API (including but not limited to interfaces, classes, and methods under the `com.lighthlib.api` package, such as `HLIGHT`, `HLightDrop`, etc.) is freely available for any third-party Minecraft mod developers to call and integrate.
+
+You are permitted to:
+- Use this API in your own mods (open-source or closed-source).
+- Distribute your mods that depend on LightHLib, provided that LightHLib itself is not modified.
+- Include LightHLib in Minecraft modpacks.
+
+The core engine of this project (including but not limited to the LHCE (Light Field Engine), Tolmeta acceleration engine, rendering pipeline injections, and bytecode transformations) is **Strictly Closed-Source** and is protected by copyright law.
+
+You are strictly PROHIBITED from:
+- Decompiling, reverse engineering, or disassembling the core engine.
+- Modifying, patching, or altering the compiled `.jar` binary.
+- Redistributing the core engine binaries under a different name or claiming ownership.
+- Using the core engine for commercial purposes without explicit written permission from the author.
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
