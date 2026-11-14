@@ -1,0 +1,124 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+// Build flavors:
+//   gradlew build              -> lighthlib-fabric-bata-v1.0        (Sodium/Iris compatible)
+//   gradlew -Pniris build       -> lighthlib-fabric-bata-niris-v1.0  (HDR over-bright lightmap,
+//                                 ships patched core shaders, declares breaks on Iris/Sodium)
+def niris = project.hasProperty('niris')
+version = niris ? 'fabric-beta-niris-v1.1' : version
+
+repositories {
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	maven {
+		name = 'Modrinth'
+		url = 'https://api.modrinth.com/maven'
+	}
+	maven {
+		name = 'Terraformers'
+		url = 'https://maven.terraformersmc.com/releases/'
+	}
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"lighthlib" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Sodium: compile-only reference for the optional compat mixin
+	// (the mixin config is "required": false, so Sodium is not a runtime dependency).
+	compileOnly "maven.modrinth:sodium:mc26.3-0.9.2-fabric"
+
+	// ModMenu: compile-only, optional entrypoint (config screen)
+	compileOnly "com.terraformersmc:modmenu:21.0.0"
+}
+
+processResources {
+	def modVersion = project.version.toString()
+	def modVersionProp = project.findProperty('mod_version')?.toString() ?: modVersion
+	def nirisFlag = project.hasProperty('niris')
+
+	def flavorMixins = nirisFlag
+			? '{ "config": "lighthlib.niris.mixins.json", "environment": "client" }'
+			: '{ "config": "lighthlib.sodium.mixins.json", "environment": "client" }'
+
+	def flavorBreaks = nirisFlag
+			? '{ "iris": "*", "sodium": "*" }'
+			: '{}'
+
+	inputs.property "version", modVersion
+	inputs.property "mod_version", modVersionProp
+	inputs.property "flavor_mixins", flavorMixins
+	inputs.property "flavor_breaks", flavorBreaks
+
+	if (nirisFlag) {
+		from('src/niris/resources')
+	}
+
+	filesMatching("fabric.mod.json") {
+		expand "version": modVersion,
+		       "mod_version": modVersionProp,
+		       "flavor_mixins": flavorMixins,
+		       "flavor_breaks": flavorBreaks
+	}
+}
+
+processClientResources {
+	if (project.hasProperty('niris')) {
+		// the niris build does not ship the Sodium compat mixin config
+		exclude 'lighthlib.sodium.mixins.json'
+	}
+}
+
+jar {
+	if (project.hasProperty('niris')) {
+		// ... nor the Sodium compat mixin class
+		exclude 'com/lighthlib/client/compat/mixin/**'
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+	it.options.encoding = "UTF-8"
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_$projectName"}
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+}
