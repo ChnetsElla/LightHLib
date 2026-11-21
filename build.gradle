@@ -8,7 +8,7 @@ plugins {
 //   gradlew -Pniris build       -> lighthlib-fabric-bata-niris-v1.0  (HDR over-bright lightmap,
 //                                 ships patched core shaders, declares breaks on Iris/Sodium)
 def niris = project.hasProperty('niris')
-version = niris ? 'fabric-beta-niris-v1.1' : version
+version = niris ? 'fabric-beta-niris-v1.2' : version
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
