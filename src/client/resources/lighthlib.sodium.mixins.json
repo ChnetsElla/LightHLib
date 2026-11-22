@@ -1,0 +1,14 @@
+{
+	"required": false,
+	"package": "com.lighthlib.client.compat.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"SodiumLightPipelineMixin"
+	],
+	"injectors": {
+		"defaultRequire": 0
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

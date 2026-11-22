@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"": {
+			"model": "lighthlib:block/hl_test_block"
+		}
+	}
+}

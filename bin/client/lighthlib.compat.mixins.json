@@ -1,0 +1,14 @@
+{
+	"required": false,
+	"package": "com.lighthlib.client.compat.indigo",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"IndigoAltRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
